@@ -1,4 +1,4 @@
-package com.utill;
+package com.util;
 
 public class Constants {
 

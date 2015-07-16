@@ -71,7 +71,6 @@ public class MainApp implements MessageListener {
 		try {
 			if (message.getJMSCorrelationID() == null) {
 				System.out.println("JMSCorrelationID :" + message.getJMSCorrelationID());
-				return;
 			}
 			if (message instanceof TextMessage) {
 				TextMessage msg = (TextMessage)message;

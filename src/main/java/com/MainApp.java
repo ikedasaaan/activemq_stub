@@ -41,19 +41,19 @@ public class MainApp implements MessageListener {
         try {
             //Connectionを作成するFactoryを作成
             QueueConnection connection = connectionFactory.createQueueConnection();
-            connection.start();
             //セッションの作成
             this.session = connection.createQueueSession(false,QueueSession.AUTO_ACKNOWLEDGE);
 
 
-            Queue testQueue = session.createQueue("destination");
+
+            Queue testQueue = session.createQueue("/topic/destination");
 
 
             //Queueと関連付け
 			MessageConsumer consumer = this.session.createConsumer(testQueue);
 			consumer.setMessageListener(this);
 
-
+			connection.start();
             //receiver.close();
             //session.close();
             //connection.close();
@@ -69,7 +69,7 @@ public class MainApp implements MessageListener {
 		// TODO 自動生成されたメソッド・スタブ
 		// terminate if JMSCorrelationID is not set
 		try {
-			if (message.getJMSCorrelationID() == null) {
+			if (message.getJMSCorrelationID() != null) {
 				System.out.println("JMSCorrelationID :" + message.getJMSCorrelationID());
 			}
 			if (message instanceof TextMessage) {

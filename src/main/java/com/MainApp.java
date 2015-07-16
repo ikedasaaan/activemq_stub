@@ -8,8 +8,9 @@ import javax.jms.QueueReceiver;
 import javax.jms.QueueSession;
 import javax.jms.TextMessage;
 
-import org.apache.activemq.ActiveMQConnection;
 import org.apache.activemq.ActiveMQConnectionFactory;
+
+import com.util.Constants;
 
 public class MainApp {
 
@@ -17,16 +18,18 @@ public class MainApp {
 
         try {
             //Connectionを作成するFactoryを作成
-            QueueConnectionFactory factory = new ActiveMQConnectionFactory(ActiveMQConnection.DEFAULT_BROKER_URL);
-            QueueConnection connection = factory.createQueueConnection();
+            QueueConnectionFactory connectionFactory = new ActiveMQConnectionFactory(Constants.MSG_BROKER_URL);
+            QueueConnection connection = connectionFactory.createQueueConnection();
 
             //セッションの作成
             QueueSession session = connection.createQueueSession(false,QueueSession.AUTO_ACKNOWLEDGE);
-            Queue queue = session.createQueue("TestQueue");
+
+
+            Queue testQueue = session.createQueue("destination");
 
 
             //Queueと関連付け
-            QueueReceiver receiver = session.createReceiver(queue);
+            QueueReceiver receiver = session.createReceiver(testQueue);
 
             connection.start();
 

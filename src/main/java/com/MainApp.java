@@ -46,7 +46,7 @@ public class MainApp implements MessageListener {
 
 
 
-            Queue testQueue = session.createQueue("/topic/destination");
+            Queue testQueue = session.createQueue("destination");
 
 
             //Queueと関連付け

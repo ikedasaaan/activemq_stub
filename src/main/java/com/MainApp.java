@@ -1,12 +1,12 @@
 package com;
 
 import javax.jms.JMSException;
+import javax.jms.MapMessage;
 import javax.jms.Queue;
 import javax.jms.QueueConnection;
 import javax.jms.QueueConnectionFactory;
 import javax.jms.QueueReceiver;
 import javax.jms.QueueSession;
-import javax.jms.TextMessage;
 
 import org.apache.activemq.ActiveMQConnectionFactory;
 
@@ -34,8 +34,8 @@ public class MainApp {
             connection.start();
 
             //メッセージの受信
-            TextMessage msg = (TextMessage) receiver.receive();
-            System.out.println(msg.getText());
+            MapMessage msg = (MapMessage) receiver.receive();
+            System.out.println(msg.getMapNames());
 
             receiver.close();
             session.close();

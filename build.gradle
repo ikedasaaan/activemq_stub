@@ -6,7 +6,7 @@ apply plugin: "maven"
 def defaultEncoding = 'UTF-8'
 [compileJava, compileTestJava]*.options*.encoding = defaultEncoding
 
-version = '0.1.0
+version = '0.1.0'
 
 
 repositories {

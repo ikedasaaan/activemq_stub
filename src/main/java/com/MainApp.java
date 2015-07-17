@@ -1,5 +1,7 @@
 package com;
 
+import java.util.Enumeration;
+
 import javax.jms.JMSException;
 import javax.jms.MapMessage;
 import javax.jms.Message;
@@ -77,7 +79,14 @@ public class MainApp implements MessageListener {
 				System.out.println("[TextMessage]" + msg.getText());
 			} else if (message instanceof MapMessage) {
 				MapMessage msg = (MapMessage)message;
-				System.out.println("[MapMessage]" + msg.getMapNames());
+				Enumeration<?> enumeratio = msg.getMapNames();
+		        while( enumeratio.hasMoreElements() )
+		        {
+		            // 分割した各要素を取得します。
+		            String current = (String)enumeratio.nextElement();
+		            // 出力します。
+		            System.out.println("[MapMessage]" + current );
+		        }
 			}
 		} catch (JMSException e) {
 			// TODO 自動生成された catch ブロック

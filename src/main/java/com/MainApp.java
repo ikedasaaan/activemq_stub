@@ -125,6 +125,7 @@ public class MainApp implements MessageListener {
             // 出力します。
             System.out.println("[MapMessage]" + current );
         }
+        System.out.println("[MapMessage getObject]" + msg.getObject("setObject"));
         Destination replyDestination = (Destination)message.getJMSReplyTo();
         this.session.createProducer(replyDestination).send(replyMessage);
 

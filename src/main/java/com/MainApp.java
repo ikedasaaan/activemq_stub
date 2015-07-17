@@ -2,6 +2,7 @@ package com;
 
 import java.util.Enumeration;
 
+import javax.jms.Destination;
 import javax.jms.JMSException;
 import javax.jms.MapMessage;
 import javax.jms.Message;
@@ -70,28 +71,62 @@ public class MainApp implements MessageListener {
 	public void onMessage(Message message) {
 		// TODO 自動生成されたメソッド・スタブ
 		// terminate if JMSCorrelationID is not set
+		System.out.println("---------------onMessage---------------");
 		try {
-			if (message.getJMSCorrelationID() != null) {
-				System.out.println("JMSCorrelationID :" + message.getJMSCorrelationID());
-			}
 			if (message instanceof TextMessage) {
 				TextMessage msg = (TextMessage)message;
 				System.out.println("[TextMessage]" + msg.getText());
 			} else if (message instanceof MapMessage) {
-				MapMessage msg = (MapMessage)message;
-				Enumeration<?> enumeratio = msg.getMapNames();
-		        while( enumeratio.hasMoreElements() )
-		        {
-		            // 分割した各要素を取得します。
-		            String current = (String)enumeratio.nextElement();
-		            // 出力します。
-		            System.out.println("[MapMessage]" + current );
-		        }
+				processMapMessage(message);
+
 			}
 		} catch (JMSException e) {
 			// TODO 自動生成された catch ブロック
 			e.printStackTrace();
+		} catch (NumberFormatException e) {
+			// TODO 自動生成された catch ブロック
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO 自動生成された catch ブロック
+			e.printStackTrace();
 		}
+
+	}
+
+	private void processMapMessage(Message message)
+			throws NumberFormatException, Exception {
+		MapMessage msg = (MapMessage)message;
+
+
+        MapMessage replyMessage = session.createMapMessage();
+
+		if (message.getJMSReplyTo() != null) {
+			System.out.println("getJMSReplyTo :" + message.getJMSReplyTo());
+			replyMessage.setJMSReplyTo(message.getJMSReplyTo());
+		}
+
+		if (message.getJMSCorrelationID() != null) {
+			System.out.println("JMSCorrelationID :" + message.getJMSCorrelationID());
+			replyMessage.setJMSCorrelationID(message.getJMSCorrelationID());
+		}
+
+		replyMessage.setString("data", "AAAAA");
+		replyMessage.setString("error_cd", "AAAAA");
+		replyMessage.setString("error_msg", "AAAAA");
+		replyMessage.setJMSType("MapMessage");
+
+
+        // log出すだけ
+        Enumeration<?> enumeratio = msg.getMapNames();
+        while( enumeratio.hasMoreElements() )
+        {
+            // 分割した各要素を取得します。
+            String current = (String)enumeratio.nextElement();
+            // 出力します。
+            System.out.println("[MapMessage]" + current );
+        }
+        Destination replyDestination = (Destination)message.getJMSReplyTo();
+        this.session.createProducer(replyDestination).send(replyMessage);
 
 	}
 }

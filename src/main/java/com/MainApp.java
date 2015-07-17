@@ -109,6 +109,10 @@ public class MainApp implements MessageListener {
 			System.out.println("JMSCorrelationID :" + message.getJMSCorrelationID());
 			replyMessage.setJMSCorrelationID(message.getJMSCorrelationID());
 		}
+		if (message.getJMSMessageID() != null) {
+			System.out.println("JMSMessageID :" + message.getJMSMessageID());
+			replyMessage.setJMSMessageID(message.getJMSMessageID());
+		}
 
 		replyMessage.setString("data", "AAAAA");
 		replyMessage.setString("error_cd", "AAAAA");

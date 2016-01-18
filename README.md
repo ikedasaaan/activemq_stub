@@ -1,4 +1,5 @@
 # activemq_stub
 
-activemqテスト用スタブ
-gradle
+Kaazing Gateway接続用
+
+JMSクライアントサンプル(マニラ用)
